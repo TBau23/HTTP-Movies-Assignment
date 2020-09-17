@@ -9,6 +9,7 @@ const initialForm = {
     title: "",
     director: "",
     metascore: "",
+    stars: []
     
 }
 
@@ -36,9 +37,17 @@ const UpdateForm = ({movieList, setMovieList}) => {
             ...movie,
             [e.target.name]: e.target.value
             
-        })
-        
+        })   
     }
+
+    const handleStars = e => {
+        setMovie({
+            ...movie,
+            [e.target.name]:e.target.value.split(',')
+        })
+    }
+
+    
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -92,6 +101,15 @@ const UpdateForm = ({movieList, setMovieList}) => {
                     name='metascore'
                     value={movie.metascore}
                     onChange={handleChange}
+                    />
+                </label>
+
+                <label>
+                    <input
+                    type='text'
+                    name='stars'
+                    value={movie.stars.toString()}
+                    onChange={handleStars}
                     />
                 </label>
 

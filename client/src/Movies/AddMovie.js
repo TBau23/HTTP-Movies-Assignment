@@ -3,18 +3,20 @@ import axios from 'axios'
 import { useHistory } from 'react-router-dom'
 
 
-const initialForm = {
-    id: '',
-    title: '',
-    director: '',
-    metascore: '',
-    stars: []
-}
 
 const AddMovie = ({movieList, setMovieList}) => {
 
+    const initialForm = {
+        id: '',
+        title: '',
+        director: '',
+        metascore: '',
+        stars: []
+    }
+
     const [newMovie, setNewMovie] = useState(initialForm)
     const history = useHistory()
+
 
     const handleChange = e => {
         setNewMovie({
@@ -23,12 +25,19 @@ const AddMovie = ({movieList, setMovieList}) => {
         })
     }
 
+    const handleStars = e => {
+        setNewMovie({
+            ...newMovie,
+            [e.target.name]: e.target.value.split(',')
+        })
+
+    }
+
     const handleSubmit = e => {
         e.preventDefault()
         axios
             .post("http://localhost:5000/api/movies", newMovie)
             .then(res => {
-                console.log(res)
                 setMovieList(res.data)
                 history.push("/")
             })
@@ -41,7 +50,7 @@ const AddMovie = ({movieList, setMovieList}) => {
         <div>
             <h3>Add a New Movie to the List!!</h3>
             <form onSubmit={handleSubmit}>
-                <label> Movie Title:
+                <label> Movie Title &nbsp;
                     <input
                     type='text'
                     name='title'
@@ -51,7 +60,7 @@ const AddMovie = ({movieList, setMovieList}) => {
                     />
                 </label>
 
-                <label> Director
+                <label> Director &nbsp;
                     <input
                     type='text'
                     name='director'
@@ -61,12 +70,22 @@ const AddMovie = ({movieList, setMovieList}) => {
                     />
                 </label>
 
-                <label> Metascore 
+                <label> Metascore &nbsp;
                     <input
                     type='number'
                     name='metascore'
                     value={newMovie.metascore}
                     onChange={handleChange}
+                    />
+                </label>
+
+                <label>Actors &nbsp;
+                    <input
+                    type='text'
+                    name='stars'
+                    value={newMovie.stars}
+                    onChange={handleStars}
+                    placeholder='Enter actor names separated by a comma...'
                     />
                 </label>
                 <button>Add Movie</button>
