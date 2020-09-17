@@ -27,10 +27,21 @@ function Movie({ addToSavedList }) {
     return <div>Loading movie information...</div>;
   }
 
+  const handleDelete = e => {
+    e.preventDefault()
+    axios
+      .delete(`http://localhost:5000/api/movies/${params.id}`)
+      .then(res => {
+        history.push("/")
+      })
+      .catch(err => {console.log(err)})
+  }
+
   return (
     <div className="save-wrapper">
       <MovieCard movie={movie} />
       <button onClick={() => history.push(`/update-movie/${movie.id}`)}>Update</button>
+      <button onClick={handleDelete}>Delete Movie</button>
       <div className="save-button" onClick={saveMovie}>
         Save
       </div>
