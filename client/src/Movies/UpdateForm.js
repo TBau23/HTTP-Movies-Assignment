@@ -3,6 +3,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import axios from 'axios'
 
 
+
 const initialForm = {
     id: "",
     title: "",
@@ -11,7 +12,7 @@ const initialForm = {
     
 }
 
-const UpdateForm = () => {
+const UpdateForm = ({movieList, setMovieList}) => {
 
     const [movie, setMovie] = useState(initialForm)
     
@@ -22,6 +23,7 @@ const UpdateForm = () => {
         axios
             .get(`http://localhost:5000/api/movies/${id}`)
             .then(res => {
+                console.log(res)
                 setMovie(res.data)
             })
             .catch(error => {
@@ -44,6 +46,16 @@ const UpdateForm = () => {
             .put(`http://localhost:5000/api/movies/${id}`, movie)
             .then(res => {
                 console.log(res)
+                // if id of movie matches movie in movie list - replace that movie
+                setMovieList(movieList.map(film => {
+                    if (film.id === id) {
+                        return movie
+                    } else {
+                        return film
+                    }
+                }))
+                history.push("/")
+
             })
             .catch(error => {
                 console.log(error)
